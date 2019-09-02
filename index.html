@@ -9,15 +9,26 @@
   <body>
     <!-- all the buttons -->
     <div id="buttons"></div>
+
     <!-- where all the gifs go -->
     <div id="gifsTable"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
       $(document).ready(function(){
-
         // topic array
         var foods = ["pizza", "burgers", "sushi", "ice cream", "chips", "steak", "stir fry", "pasta", "salad", "sandwich"];
+        
+        //buttons for array
+        foods.forEach(function(food) {
+          var buffet = food.toString(buffet);
+          var menu = $("<button>")
+            .attr("class", "food")
+            .attr("name", buffet)
+            .text(buffet)
+            .appendTo($("#buttons"));
+        });
+
         // api key
         var queryURL = "https://api.giphy.com/v1/gifs/search?q="+
         foods +"&api_key=FSmbvikr3hx4Y9dg4c2V1FKPADZzrlXC&limit=10";
@@ -34,11 +45,11 @@
             var gifDiv = $("<div>");
             var rating = results[i].rating;
             var p = $("<p>").text("Rating: " + rating);
-            var foodsImage = $("<img>");
+            var foodImage = $("<img>");
           
-            foodsImage.attr("src", results[i].images.fixed_height.url);
+            foodImage.attr("src", results[i].images.fixed_height.url);
             gifDiv.prepend(p);
-            gifDiv.prepend(foodsImage);
+            gifDiv.prepend(foodImage);
             $("#gifsTable").prepend(gifDiv);
           };  
         })
