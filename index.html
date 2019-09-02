@@ -4,65 +4,76 @@
   <head>
     <meta charset="utf-8">
     <title>GifTasteic</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
 
   <body>
+    <div class="jumbotron">
+      <h1 class="display-4">Food!Gif me food!!</h1>
+      <p class="lead">All the food gifs you can ask for, what's your favourite?</p>
+      <hr class="my-4">
+      <p>Buttons for all the food!!</p>
+      <div class="container">
+        <div class="row" id="buttons"></div>
+      </div>      
+    </div>
     <!-- all the buttons -->
-    <div id="buttons"></div>
 
     <!-- where all the gifs go -->
-    <div id="gifsTable"></div>
+    <div class="container">
+      <div class="row" id="gifsTable"></div>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
       $(document).ready(function(){
         // topic array
-        var foods = ["pizza", "burgers", "sushi", "ice cream", "chips", "steak", "stir fry", "pasta", "salad", "sandwich"];
+        var foods = ["salad", "chips", "sandwich", "sushi", "stir fry", "pizza", "burgers", "steak", "pasta", "muffins", "cake", "ice cream"];
         var buffet;
         //buttons for array
         foods.forEach(function(food) {
           buffet = food.toString(buffet);
           var menu = $("<button>")
-          .attr("class", "food")
+          .attr("class", "col-md-2")
+          .attr("id", "food")
           .attr("dish", buffet)
           .text(buffet)
           .appendTo($("#buttons"));
         });
-          
-          
+        
         // clicking button
         $("button").on("click", function() {
           $("#gifsTable").empty();
           var dishes = $(this).attr("dish");
           // api key
           var queryURL = "https://api.giphy.com/v1/gifs/search?q="+
-              dishes +"&api_key=FSmbvikr3hx4Y9dg4c2V1FKPADZzrlXC&limit=10";
-              
+          dishes +"&api_key=FSmbvikr3hx4Y9dg4c2V1FKPADZzrlXC&limit=10";
+          
           $.ajax({
             url: queryURL,
             method: "GET"
           }).then(function(response) {
             var results = response.data;
-                
+            
             for (var i = 0; i < results.length; i++) {
-                  
+              
               var gifDiv = $("<div>");
-              var rating = results[i].rating;
-              var p = $("<p>").text("Rating: " + rating);
-              var foodImage = $("<img>");
-                      
-              foodImage.attr("src", results[i].images.fixed_height.url);
-              gifDiv.prepend(p);
-              gifDiv.prepend(foodImage);
-              $("#gifsTable").prepend(gifDiv);
-            };  
+                var rating = results[i].rating;
+                var p = $("<p>").text("Rating: " + rating);
+                var foodImage = $("<img>")
+                  .attr("class", "col-md-12")
+                  .attr("src", results[i].images.fixed_height.url)
+                  gifDiv.prepend(p);
+                  gifDiv.prepend(foodImage);
+                  $("#gifsTable").prepend(gifDiv);
+                };  
+              });
+            });
           });
-        });
-      });
+          
+          </script>
 
-    </script>
-
-  </body>
+</body>
 
 </html>
       
