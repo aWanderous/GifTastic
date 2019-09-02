@@ -18,41 +18,46 @@
       $(document).ready(function(){
         // topic array
         var foods = ["pizza", "burgers", "sushi", "ice cream", "chips", "steak", "stir fry", "pasta", "salad", "sandwich"];
-        
+        var buffet;
         //buttons for array
         foods.forEach(function(food) {
-          var buffet = food.toString(buffet);
+          buffet = food.toString(buffet);
           var menu = $("<button>")
-            .attr("class", "food")
-            .attr("name", buffet)
-            .text(buffet)
-            .appendTo($("#buttons"));
+          .attr("class", "food")
+          .attr("dish", buffet)
+          .text(buffet)
+          .appendTo($("#buttons"));
         });
-
-        // api key
-        var queryURL = "https://api.giphy.com/v1/gifs/search?q="+
-        foods +"&api_key=FSmbvikr3hx4Y9dg4c2V1FKPADZzrlXC&limit=10";
-
-        $.ajax({
-          url: queryURL,
-          method: "GET"
-        }).then(function(response) {
-          console.log(response)
-          var results = response.data;
           
-          for (var i = 0; i < results.length; i++) {
-           
-            var gifDiv = $("<div>");
-            var rating = results[i].rating;
-            var p = $("<p>").text("Rating: " + rating);
-            var foodImage = $("<img>");
           
-            foodImage.attr("src", results[i].images.fixed_height.url);
-            gifDiv.prepend(p);
-            gifDiv.prepend(foodImage);
-            $("#gifsTable").prepend(gifDiv);
-          };  
-        })
+        // clicking button
+        $("button").on("click", function() {
+          $("#gifsTable").empty();
+          var dishes = $(this).attr("dish");
+          // api key
+          var queryURL = "https://api.giphy.com/v1/gifs/search?q="+
+              dishes +"&api_key=FSmbvikr3hx4Y9dg4c2V1FKPADZzrlXC&limit=10";
+              
+          $.ajax({
+            url: queryURL,
+            method: "GET"
+          }).then(function(response) {
+            var results = response.data;
+                
+            for (var i = 0; i < results.length; i++) {
+                  
+              var gifDiv = $("<div>");
+              var rating = results[i].rating;
+              var p = $("<p>").text("Rating: " + rating);
+              var foodImage = $("<img>");
+                      
+              foodImage.attr("src", results[i].images.fixed_height.url);
+              gifDiv.prepend(p);
+              gifDiv.prepend(foodImage);
+              $("#gifsTable").prepend(gifDiv);
+            };  
+          });
+        });
       });
 
     </script>
