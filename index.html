@@ -10,14 +10,20 @@
   <body>
     <div class="jumbotron">
       <h1 class="display-4">Food!Gif me food!!</h1>
-      <p class="lead">All the food gifs you can ask for, what's your favourite?</p>
+      <p class="lead">All the food gifs you can ask for, what's your favourite?
+
+          <div class="col-4">
+            <input type="text" class="form-control" placeholder="Yumm!">
+            <button id="cook">Cook it!</button>
+          </div>
+        </p>
+        <!-- all the buttons -->
       <hr class="my-4">
-      <p>Buttons for all the food!!</p>
+      <p>Gifs menu of buttons for all the food!!</p>
       <div class="container">
         <div class="row" id="buttons"></div>
       </div>      
     </div>
-    <!-- all the buttons -->
 
     <!-- where all the gifs go -->
     <div class="container">
@@ -30,19 +36,23 @@
         // topic array
         var foods = ["salad", "chips", "sandwich", "sushi", "stir fry", "pizza", "burgers", "steak", "pasta", "muffins", "cake", "ice cream"];
         var buffet;
+        // $("#cook").on("click", function(){
+          // foods.push("cookies");
+        // })
+        console.log(foods)
         //buttons for array
         foods.forEach(function(food) {
           buffet = food.toString(buffet);
           var menu = $("<button>")
-          .attr("class", "col-md-2")
-          .attr("id", "food")
+          .attr("class", "col-md-2 food")
           .attr("dish", buffet)
           .text(buffet)
           .appendTo($("#buttons"));
         });
         
-        // clicking button
-        $("button").on("click", function() {
+        // clicking array button
+        $(".food").on("click", function() {
+          console.log('clicked');
           $("#gifsTable").empty();
           var dishes = $(this).attr("dish");
           // api key
