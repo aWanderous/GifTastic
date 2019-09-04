@@ -12,11 +12,12 @@
       <h1 class="display-4">Food!Gif me food!!</h1>
       <p class="lead">All the food gifs you can ask for, what's your favourite?
 
-          <div class="col-4">
-            <input type="text" class="form-control" placeholder="Yumm!">
-            <button id="cook">Cook it!</button>
-          </div>
-        </p>
+        <!-- input area for new buttons -->
+        <div class="col-4">
+          <input type="text" class="form-control" placeholder="Yumm!">
+          <button id="cook">Cook it!</button>
+        </div>
+      </p>
         <!-- all the buttons -->
       <hr class="my-4">
       <p>Gifs menu of buttons for all the food!!</p>
@@ -29,61 +30,89 @@
     <div class="container">
       <div class="row" id="gifsTable"></div>
     </div>
-
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
       $(document).ready(function(){
         // topic array
         var foods = ["salad", "chips", "sandwich", "sushi", "stir fry", "pizza", "burgers", "steak", "pasta", "muffins", "cake", "ice cream"];
         var buffet;
-        // $("#cook").on("click", function(){
-          // foods.push("cookies");
-        // })
-        console.log(foods)
+
         //buttons for array
-        foods.forEach(function(food) {
+        foods.forEach(function makeButton(food) {
           buffet = food.toString(buffet);
           var menu = $("<button>")
-          .attr("class", "col-md-2 food")
-          .attr("dish", buffet)
-          .text(buffet)
-          .appendTo($("#buttons"));
+            .attr("class", "col-md-2 food")
+            .attr("dish", buffet)
+            .text(buffet)
+            .appendTo($("#buttons"));
         });
-        
+
+        $("#cook").click(function newFood(event){
+          event.preventDefault();
+          var addFood = $(".form-control").val();
+          foods.push(addFood);
+          makeButton(food);
+          return;
+          console.log(foods)
+        });
+          
         // clicking array button
-        $(".food").on("click", function() {
-          console.log('clicked');
+        $(".food").click(function() {
           $("#gifsTable").empty();
           var dishes = $(this).attr("dish");
           // api key
           var queryURL = "https://api.giphy.com/v1/gifs/search?q="+
           dishes +"&api_key=FSmbvikr3hx4Y9dg4c2V1FKPADZzrlXC&limit=10";
-          
+            
           $.ajax({
             url: queryURL,
             method: "GET"
           }).then(function(response) {
             var results = response.data;
-            
-            for (var i = 0; i < results.length; i++) {
               
+            for (var i = 0; i < results.length; i++) {
+                
               var gifDiv = $("<div>");
-                var rating = results[i].rating;
-                var p = $("<p>").text("Rating: " + rating);
-                var foodImage = $("<img>")
-                  .attr("class", "col-md-12")
-                  .attr("src", results[i].images.fixed_height.url)
-                  gifDiv.prepend(p);
-                  gifDiv.prepend(foodImage);
-                  $("#gifsTable").prepend(gifDiv);
-                };  
-              });
-            });
+              var rating = results[i].rating;
+              var p = $("<p>").text("Rating: " + rating);
+              var foodImage = $("<img>")
+                .attr("class", "col-md-8 gif")
+                .attr("src", results[i].images.original_still.url)
+                .attr("data-still", results[i].images.original_still.url)
+				        .attr("data-animate", results[i].images.original.url)
+                .attr("data-state", "still")
+              gifDiv.prepend(p);
+              gifDiv.prepend(foodImage);
+              $("#gifsTable").prepend(gifDiv);
+              
+            };  
           });
           
-          </script>
+        });
+              
+        function changeState(){
+		      var state = $(this).attr("data-state");
+		      var animateImage = $(this).attr("data-animate");
+		      var stillImage = $(this).attr("data-still");
 
-</body>
+		    if (state == "still") {
+		    	$(this).attr("src", animateImage);
+          $(this).attr("data-state", "animate");
+	    	} else if (state == "animate") {
+			    $(this).attr("src", stillImage);
+			    $(this).attr("data-state", "still");
+		    };
+        };
+        console.log(foods)
+
+        $(document).on("click", ".gif", changeState);
+            
+      });
+            // submitting user Input
+    </script>
+
+  </body>
 
 </html>
-      
+
