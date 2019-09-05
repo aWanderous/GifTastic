@@ -33,27 +33,31 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
-      $(document).ready(function(){
-        // topic array
-        var foods = ["salad", "chips", "sandwich", "sushi", "stir fry", "pizza", "burgers", "steak", "pasta", "muffins", "cake", "ice cream"];
-        var buffet;
-
-        //buttons for array
+      // topic array
+      var foods = ["salad", "chips", "sandwich", "sushi", "stir fry", "pizza", "burgers", "steak", "pasta", "muffins", "cake", "ice cream"];
+      var buffet;
+      
+      function renderButtons () {
+        $("#buttons").empty();
         foods.forEach(function makeButton(food) {
-          buffet = food.toString(buffet);
-          var menu = $("<button>")
-            .attr("class", "col-md-2 food")
-            .attr("dish", buffet)
-            .text(buffet)
-            .appendTo($("#buttons"));
+        buffet = food.toString(buffet);
+        var menu = $("<button>")
+          .attr("class", "col-md-2 food")
+          .attr("dish", buffet)
+          .text(buffet)
+          .appendTo($("#buttons"));
         });
+      }
+      $(document).ready(function(){
 
-        $("#cook").click(function newFood(event){
+        renderButtons();
+
+        // submitting user Input
+        $("#cook").click(function newFood(){
           event.preventDefault();
           var addFood = $(".form-control").val();
           foods.push(addFood);
-          makeButton(food);
-          return;
+          renderButtons();
           console.log(foods)
         });
           
@@ -70,7 +74,7 @@
             method: "GET"
           }).then(function(response) {
             var results = response.data;
-              
+              console.log(results)
             for (var i = 0; i < results.length; i++) {
                 
               var gifDiv = $("<div>");
@@ -96,20 +100,19 @@
 		      var animateImage = $(this).attr("data-animate");
 		      var stillImage = $(this).attr("data-still");
 
-		    if (state == "still") {
-		    	$(this).attr("src", animateImage);
-          $(this).attr("data-state", "animate");
-	    	} else if (state == "animate") {
-			    $(this).attr("src", stillImage);
-			    $(this).attr("data-state", "still");
-		    };
+		      if (state == "still") {
+		      	$(this).attr("src", animateImage);
+           $(this).attr("data-state", "animate");
+	      	} else if (state == "animate") {
+			     $(this).attr("src", stillImage);
+			      $(this).attr("data-state", "still");
+		      };
         };
+        // $(document).on("click", ".cook", newFood);
         console.log(foods)
-
         $(document).on("click", ".gif", changeState);
             
       });
-            // submitting user Input
     </script>
 
   </body>
