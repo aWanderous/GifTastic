@@ -4,7 +4,8 @@
   <head>
     <meta charset="utf-8">
     <title>GifTasteic</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
 
   <body>
@@ -15,9 +16,10 @@
         <!-- input area for new buttons -->
         <div class="col-4">
           <input type="text" class="form-control" placeholder="Yumm!">
-          <button id="cook">Cook it!</button>
+          <button type="button" class="btn btn-secondary btn-lg" id="cook">Cook it!</button>
         </div>
       </p>
+      
         <!-- all the buttons -->
       <hr class="my-4">
       <p>Gifs menu of buttons for all the food!!</p>
@@ -33,37 +35,39 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
+
       // topic array
       var foods = ["salad", "chips", "sandwich", "sushi", "stir fry", "pizza", "burgers", "steak", "pasta", "muffins", "cake", "ice cream"];
       var buffet;
-      
+
+      // makes all the buttons
       function renderButtons () {
         $("#buttons").empty();
         foods.forEach(function makeButton(food) {
         buffet = food.toString(buffet);
         var menu = $("<button>")
-          .attr("class", "col-md-2 food")
+          .attr("type", "button")
+          .attr("class", "btn btn-outline-dark food")
           .attr("dish", buffet)
           .text(buffet)
           .appendTo($("#buttons"));
         });
+
         // clicking array button
         $(".food").click(function () {
-          console.log(foods)
           $("#gifsTable").empty();
           var dishes = $(this).attr("dish");
           // api key
           var queryURL = "https://api.giphy.com/v1/gifs/search?q="+
           dishes +"&api_key=FSmbvikr3hx4Y9dg4c2V1FKPADZzrlXC&limit=10";
-          
-            
+                      
           $.ajax({
             url: queryURL,
             method: "GET"
           }).then(function(response) {
             var results = response.data;
+          
             for (var i = 0; i < results.length; i++) {
-                
               var gifDiv = $("<div>");
               var rating = results[i].rating;
               var p = $("<p>").text("Rating: " + rating);
@@ -76,26 +80,29 @@
               gifDiv.prepend(p);
               gifDiv.prepend(foodImage);
               $("#gifsTable").prepend(gifDiv);
-              
             };  
           });
           
         });
               
-        function changeState(){
-          var state = $(this).attr("data-state");
-          var animateImage = $(this).attr("data-animate");
-          var stillImage = $(this).attr("data-still");
-  
-          if (state == "still") {
-            $(this).attr("src", animateImage);
-           $(this).attr("data-state", "animate");
-          } else if (state == "animate") {
-           $(this).attr("src", stillImage);
-            $(this).attr("data-state", "still");
-          };
-        };
       }
+          
+      // animate gifs
+      function changeState(){
+        var state = $(this).attr("data-state");
+        var animateImage = $(this).attr("data-animate");
+        var stillImage = $(this).attr("data-still");
+    
+        if (state == "still") {
+          $(this).attr("src", animateImage);
+          $(this).attr("data-state", "animate");
+        } else if (state == "animate") {
+          $(this).attr("src", stillImage);
+          $(this).attr("data-state", "still");
+        };
+      };
+  
+      // on screen load
       $(document).ready(function(){
 
         renderButtons();
@@ -105,12 +112,12 @@
           var addFood = $(".form-control").val();
           foods.push(addFood);
           renderButtons();
-        });
-        
-       
-        
+          $(".form-control").val("");
+        });   
       });
+  
       $(document).on("click", ".gif", changeState);
+  
     </script>
 
   </body>
