@@ -3,18 +3,20 @@
 
   <head>
     <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Mansalva|Notable&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>GifTasteic</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
-  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
 
-  <body>
-    <div class="jumbotron">
-      <h1 class="display-4">Food!Gif me food!!</h1>
-      <p class="lead">All the food gifs you can ask for, what's your favourite?
+  <body style="background-color: wheat">
+    <div class="jumbotron" style="background-image: url('cute-food-background.jpg'); background-position: center;
+    background-size: cover;">
+      <h1 class="display-4" style="color: purple; font-weight: bold; font-family: 'Mansalva', cursive;">Food!Gif me food!!</h1>
+      <p class="lead" style="color: aqua; font-weight: bold; font-family: 'Notable', sans-serif;">All the food gifs you can ask for, what's your favourite?
 
         <!-- input area for new buttons -->
-        <div class="col-4">
+        <div class="col-4" >
           <input type="text" class="form-control" placeholder="Yumm!">
           <button type="button" class="btn btn-secondary btn-lg" id="cook">Cook it!</button>
         </div>
@@ -22,7 +24,7 @@
       
         <!-- all the buttons -->
       <hr class="my-4">
-      <p>Gifs menu of buttons for all the food!!</p>
+      <p style="color: pink; font-weight: bold; font-family: 'Notable', sans-serif;">Gifs menu of buttons for all the food!!</p>
       <div class="container">
         <div class="row" id="buttons"></div>
       </div>      
@@ -47,7 +49,7 @@
         buffet = food.toString(buffet);
         var menu = $("<button>")
           .attr("type", "button")
-          .attr("class", "btn btn-outline-dark food")
+          .attr("class", "btn btn-warning food")
           .attr("dish", buffet)
           .text(buffet)
           .appendTo($("#buttons"));
@@ -70,7 +72,8 @@
             for (var i = 0; i < results.length; i++) {
               var gifDiv = $("<div>");
               var rating = results[i].rating;
-              var p = $("<p>").text("Rating: " + rating);
+              var p = $("<p>").text("Rating: " + rating)
+                .attr("style", "color: blue; font-family: cursive;");
               var foodImage = $("<img>")
                 .attr("class", "col-md-8 gif")
                 .attr("src", results[i].images.original_still.url)
